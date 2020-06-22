@@ -1,0 +1,13 @@
+{
+  "port": 3000,
+  "mqttHost": "mqtt://localhost",
+  "mqttTopic": "tuyamqtt",
+  "apiKey": "changeme",
+  "apiSecret": "changeme",
+  "apiSchema": "changeme",
+  "apiRegion": "eu",
+  "apiTimezone": "Europe/Amsterdam",
+  "apiTimeout": 20,
+  "wifiSsid": "changeme",
+  "wifiPass": "changeme"
+}

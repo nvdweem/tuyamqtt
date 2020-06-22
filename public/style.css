@@ -1,0 +1,14 @@
+html, body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+textarea.console {
+    width: 100%;
+    height: 50%;
+}
+
+.cur-p {
+    cursor: pointer;
+}

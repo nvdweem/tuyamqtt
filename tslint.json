@@ -1,0 +1,28 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "no-console": false,
+        "quotemark": {
+            "options": "single"
+        },
+        "max-line-length": false,
+        "member-access": {
+            "options": "no-public"
+        },
+        "ordered-imports": false,
+        "arrow-parens": {
+            "options": "ban-single-arg-parens"
+        },
+        "typedef": {
+            "options": ["call-signature"]
+        },
+        "member-ordering": false,
+        "object-literal-sort-keys": false,
+        "no-var-requires": false
+    },
+    "rulesDirectory": []
+}
