@@ -9,5 +9,6 @@
   "apiTimezone": "Europe/Amsterdam",
   "apiTimeout": 20,
   "wifiSsid": "changeme",
-  "wifiPass": "changeme"
+  "wifiPass": "changeme",
+  "devices": []
 }
