@@ -1,6 +1,7 @@
 (function () {
     const consoleArea = document.querySelector('textarea.console');
     const newDeviceBtn = document.querySelector('.new-device');
+    const newDeviceStringBtn = document.querySelector('.new-device-string');
     const devicesTbl = document.querySelector('.devices');
     const activeCells = {};
 
@@ -12,7 +13,7 @@
         ws = new WebSocket(url);
         ws.onopen = () => {
             console.log('Connected to backend');
-            send('init')
+            writeConsole('Connected to back-end');
         };
 
         ws.onmessage = e => {
@@ -98,7 +99,14 @@
     newDeviceBtn.addEventListener('click', () => {
         send('search', {});
         newDeviceBtn.disabled = true;
-    })
+    });
+
+    newDeviceStringBtn.addEventListener('click', () => {
+        const str = prompt('Paste the device string in the box');
+        if (str) {
+            send('adddevice', {data: JSON.parse(str)});
+        }
+    });
 
     console.log('Starting', url);
 })();

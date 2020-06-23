@@ -4,7 +4,7 @@ const debug = require('debug')('tuyamqqt:session');
 import {Mqtt} from './mqtt';
 import {ILinkResult, Tuya} from './tuya';
 import {Subscription} from 'rxjs';
-import {Config} from './config';
+import {Config, IDevice} from './config';
 
 export class WsSession {
     private subscriptions: Subscription[] = [];
@@ -35,7 +35,7 @@ export class WsSession {
     }
 
     send(data: any): void {
-        if (typeof(data) === 'string') {
+        if (typeof (data) === 'string') {
             data = {cmd: 'console', data};
         }
         this.sess.send(JSON.stringify(data));
@@ -48,7 +48,10 @@ export class WsSession {
                 return this.search();
             case 'updatedevice':
                 return this.updateDevice(data);
-            case 'deletedevice': return this.deleteDevice(data.id);
+            case 'deletedevice':
+                return this.deleteDevice(data.id);
+            case 'adddevice':
+                return this.addDevice(data.data);
         }
     }
 
@@ -56,7 +59,7 @@ export class WsSession {
         this.tuya.findDevice().then(d => {
             if (d.success && d.device) {
                 this.cfg.addDevice(d.device);
-                this.cfg.console.next({cmd: 'console', data: {msg: 'device added', device: d.device}});
+                this.cfg.console.next({cmd: 'console', data: {msg: 'Device added', device: d.device}});
             }
             debug(d);
             return d;
@@ -65,6 +68,13 @@ export class WsSession {
                 this.send({cmd: 'searchdone', data: {success: false, message: e.message} as ILinkResult});
                 console.error(e);
             });
+    }
+
+    private addDevice(data: IDevice): void {
+        if (data.hasOwnProperty('id') && data.hasOwnProperty('key')) {
+            this.cfg.addDevice(data);
+            this.cfg.console.next({cmd: 'console', data: {msg: 'Device added', device: data}});
+        }
     }
 
     private updateDevice(data: IUpdateDeviceCommand): void {
@@ -91,7 +101,7 @@ export class WsSession {
     }
 }
 
-type ICommand = ISearchCommand | IUpdateDeviceCommand | IDeleteDeviceCommand;
+type ICommand = ISearchCommand | IUpdateDeviceCommand | IDeleteDeviceCommand | IAddDeviceCommand;
 
 interface ISearchCommand {
     cmd: 'search';
@@ -107,4 +117,9 @@ interface IUpdateDeviceCommand {
 interface IDeleteDeviceCommand {
     cmd: 'deletedevice';
     id: string;
+}
+
+interface IAddDeviceCommand {
+    cmd: 'adddevice';
+    data: IDevice;
 }
