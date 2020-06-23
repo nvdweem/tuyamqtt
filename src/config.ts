@@ -40,6 +40,7 @@ export interface IDeviceEvent {
 
 export class Config {
     private confFile: string;
+    console = new Subject<any>();
     options = new ReplaySubject<IConfig>(1);
     deviceEvents = new Subject<IDeviceEvent>();
     devices = new ReplaySubject<IDevice[]>(1);

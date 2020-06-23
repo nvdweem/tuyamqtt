@@ -25,6 +25,7 @@ export class WsSession {
             data[id] = connected;
             this.send({cmd: 'connected', data});
         }));
+        this.subscriptions.push(cfg.console.subscribe(s => this.send(s)));
         this.send({cmd: 'connected', data: this.tuya.connected});
     }
 
@@ -34,6 +35,9 @@ export class WsSession {
     }
 
     send(data: any): void {
+        if (typeof(data) === 'string') {
+            data = {cmd: 'console', data};
+        }
         this.sess.send(JSON.stringify(data));
     }
 
@@ -52,6 +56,7 @@ export class WsSession {
         this.tuya.findDevice().then(d => {
             if (d.success && d.device) {
                 this.cfg.addDevice(d.device);
+                this.cfg.console.next({cmd: 'console', data: {msg: 'device added', device: d.device}});
             }
             debug(d);
             return d;
