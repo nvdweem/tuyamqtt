@@ -39,12 +39,22 @@ export interface IDeviceEvent {
 }
 
 export class Config {
+    private confFile: string;
     options = new ReplaySubject<IConfig>(1);
     deviceEvents = new Subject<IDeviceEvent>();
     devices = new ReplaySubject<IDevice[]>(1);
 
-    constructor() {
-        const config = this.readPromise('config.json');
+    constructor(confLoc: string) {
+        if (!confLoc.endsWith('/')) {
+            confLoc += '/';
+        }
+        this.confFile = `${confLoc}config.json`;
+        debug(`Using configuration from ${this.confFile}`);
+        if (!fs.existsSync(this.confFile)) {
+            fs.copyFileSync('config.default.json', this.confFile);
+        }
+
+        const config = this.readPromise(`${confLoc}config.json`);
         const def = this.readPromise('config.default.json');
 
         Promise.all([config, def]).then(([c, d]) => {
@@ -119,6 +129,6 @@ export class Config {
     }
 
     private saveInternal(cfg: IConfig): void {
-        fs.writeFile('config.json', JSON.stringify(cfg, undefined, 2), err => debug(err));
+        fs.writeFile(this.confFile, JSON.stringify(cfg, undefined, 2), err => debug(err));
     }
 }

@@ -6,7 +6,7 @@ import {Mqtt} from './mqtt';
 import {Tuya} from './tuya';
 
 console.log('Starting');
-const config = new Config();
+const config = new Config(process.env.config || './');
 config.options.subscribe(cfg => {
     const mqtt = new Mqtt(cfg);
     const tuya = new Tuya(cfg, config, mqtt);
@@ -15,5 +15,5 @@ config.options.subscribe(cfg => {
     console.log('Connecting to devices');
     (cfg.devices || []).forEach(d => tuya.addDevice(d));
 
-    debug(`Started and listening on port ${cfg.port}`);
+    console.log(`Started and listening on port ${cfg.port}`);
 });
