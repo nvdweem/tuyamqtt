@@ -18,7 +18,7 @@
     "debug": "^4.1.1",
     "express": "^4.18.2",
     "express-session": "^1.17.1",
-    "mqtt": "^4.1.0",
+    "mqtt": "^4.3.7",
     "rxjs": "^6.5.5",
     "tuyapi": "github:codetheweb/tuyapi",
     "ws": "^7.3.0"
